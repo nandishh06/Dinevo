@@ -1,0 +1,22 @@
+# Local environment / secrets
+.env
+
+# SQLite database files
+data/*.db
+data/*.db-journal
+
+# Generated local assets (keep assets out of source control)
+data/assets/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+
+# Runtime job/work output
+data/trellis_jobs/
+data/work/
+data/trellis/

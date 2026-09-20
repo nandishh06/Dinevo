@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build output
+.output/
+.vercel/
+dist/
+.wrangler/
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+.vercel
+
+# Local HTTPS certificates
+.certs/
+
+# CLI / IDE artifacts
+.commandcode/
+
+# TanStack generated cache
+.tanstack/

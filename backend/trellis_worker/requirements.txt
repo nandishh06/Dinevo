@@ -1,0 +1,24 @@
+# TRELLIS GPU worker — isolated Colab environment requirements.
+# This file is INTENTIONALLY separate from backend/pyproject.toml.
+# It is installed ONLY inside the Colab T4 environment (/content/trellis-env),
+# never into the Mac backend/.venv.
+#
+# Match the M4a.1-verified configuration:
+#   Python 3.13, PyTorch 2.11.0+cu128, CUDA 12.8, Tesla T4, TRELLIS image-large 1.2B
+# Install per TRELLIS's own requirements.txt (pinned to the M4a.1-verified
+# commit) rather than blindly installing latest versions.
+
+# Core TRELLIS deps (adjust to the exact versions the verified TRELLIS commit pins):
+torch==2.11.0+cu128
+torchvision
+xformers
+kaolin
+trimesh
+numpy
+Pillow
+huggingface_hub
+
+# TRELLIS itself is installed from source:
+#   git clone https://github.com/microsoft/TRELLIS.git /content/trellis
+#   git checkout <M4a.1-verified commit>
+#   pip install -e /content/trellis

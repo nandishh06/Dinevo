@@ -5,17 +5,6 @@ import tailwindcss from "@tailwindcss/vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import { nitro } from "nitro/vite";
 
-// Dscape-owned Vite configuration.
-//
-// The build pipeline is fully owned by the project:
-//   - tanstackStart: TanStack Start SSR + file routing
-//   - viteReact: React fast refresh / JSX
-//   - tailwindcss: Tailwind v4 styles
-//   - viteTsConfigPaths: @/* alias -> ./src/*
-//   - nitro: production server output (SSR, nested routes, static assets)
-//
-// Nitro's Vercel preset makes `bun run build` emit a ready-to-deploy .output
-// for Vercel. Swap the preset here if the hosting target changes.
 export default defineConfig({
   plugins: [
     tanstackStart({
@@ -28,10 +17,6 @@ export default defineConfig({
     viteTsConfigPaths(),
     nitro({
       preset: "vercel",
-      // Vercel Build Output API: guarantee .glb / .usdz static assets are
-      // served with the correct model content types regardless of the
-      // platform's default mime map. Merged into .vercel/output/config.json
-      // by Nitro.
       vercel: {
         config: {
           version: 3,
@@ -47,6 +32,7 @@ export default defineConfig({
       },
     }),
   ],
+
   server: {
     host: "0.0.0.0",
     https: {

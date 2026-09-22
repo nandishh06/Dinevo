@@ -32,7 +32,7 @@ Environment:
       /content/trellis/pretrained/trellis-image-large
 
 This worker runs TRELLIS only.
-It does not call Meshy or any paid generation API.
+It does not call any paid generation API.
 """
 
 from __future__ import annotations

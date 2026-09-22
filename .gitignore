@@ -27,3 +27,7 @@ dist/
 
 # TanStack generated cache
 .tanstack/
+
+# Python build artifacts
+backend/build/
+*.egg-info/

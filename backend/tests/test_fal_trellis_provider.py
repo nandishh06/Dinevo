@@ -110,21 +110,20 @@ def test_extract_glb_url_falls_back_to_other_keys():
 
 
 # ---------------------------------------------------------------------------
-# Provider selection (fal vs meshy vs trellis)
+# Provider selection (fal vs trellis)
 # ---------------------------------------------------------------------------
 
 def _settings(**overrides) -> "object":
     from app.config import Settings
 
     defaults = {
-        "meshy_api_key": "",
         "fal_key": "",
         "image_to_3d_provider": "fal",
         "trellis_job_dir": "./data/trellis/jobs",
         "trellis_staging_dir": "./data/trellis/staging",
         "trellis_results_dir": "./data/trellis/results",
         "supabase_url": "",
-        "supabase_service_role_key": "",
+        "supabase_secret_key": "",
         "supabase_jwt_secret": "",
     }
     defaults.update(overrides)
@@ -136,14 +135,6 @@ def test_build_provider_selects_fal():
 
     provider = build_provider(_settings(image_to_3d_provider="fal", fal_key="k"))
     assert isinstance(provider, FalTrellisProvider)
-
-
-def test_build_provider_selects_meshy():
-    from app.providers.meshy import MeshyProvider
-    from app.workers import build_provider
-
-    provider = build_provider(_settings(image_to_3d_provider="meshy", meshy_api_key="k"))
-    assert isinstance(provider, MeshyProvider)
 
 
 def test_build_provider_selects_trellis():

@@ -79,7 +79,7 @@ PHASE 1 (built, working)
     │     PENDING → PROCESSING → READY_FOR_REVIEW → APPROVED → PUBLISHED
     ├── GenerationService        (orchestrates the lifecycle)
     ├── ImageTo3DProvider (ABC)  (the provider boundary)
-    │     └── MeshyProvider      (paid cloud API)
+    │     └── Cloud provider     (paid cloud API)
     ├── AssetStorage (ABC)       (where generated files live)
     │     └── LocalAssetStorage  (local disk, dev)
     ├── Validation foundation
@@ -96,8 +96,8 @@ PHASE 1 (built, working)
 
 **What Phase 1 lacked:**
 - A real, affordable way to turn an uploaded photo into a 3D model.
-- `MeshyProvider` existed but required a **paid API key and credits** — which
-  conflicts with the project's $0 requirement.
+- A paid cloud 3D provider existed but required an **API key and credits** —
+  which conflicts with the project's $0 requirement.
 - Only 1 of 15 dishes had any 3D asset (`paneer-tikka` and `masala-dosa` are
   referenced in the menu but have no model file — they silently fall back to
   photo-only AR).
@@ -111,7 +111,7 @@ PHASE 1 (built, working)
 > The project must run on a **$0 / free-tier basis**. No paid 3D APIs, no
 > credits, no paid GPU services.
 
-This ruled out Meshy (and the SF3D experiment, which ran out of GPU memory on
+This ruled out paid cloud 3D APIs (and the SF3D experiment, which ran out of GPU memory on
 the T4). After evaluating open-source image-to-3D models, we chose
 **TRELLIS image-large (1.2B)** — MIT-licensed, free weights, runs on our
 Tesla T4, outputs GLB directly.
@@ -126,8 +126,8 @@ BEFORE (M1–M3)                          AFTER (M4)
 
   FastAPI                                  FastAPI (Mac)
     └─ GenerationService                     └─ GenerationService
-         └─ MeshyProvider (paid)                  └─ LocalTrellisProvider   NEW
-              └─ Meshy cloud                          └─ Job protocol (staging/results)
+         └─ Cloud provider (paid)                 └─ LocalTrellisProvider   NEW
+              └─ Cloud generation                     └─ Job protocol (staging/results)
                                                           └─ Google Drive bridge   $0
                                                               └─ Colab T4 worker   NEW
                                                                    └─ TRELLIS image-large
@@ -137,8 +137,8 @@ BEFORE (M1–M3)                          AFTER (M4)
 **What stays the same:**
 - `GenerationService`, the lifecycle, `AssetStorage`, validation, the admin
   API, and the entire customer AR frontend.
-- `MeshyProvider` remains in the codebase (behind the same ABC) but is not
-  used by the $0 path.
+- The paid cloud provider has been removed; the remaining providers are
+  `FalTrellisProvider` (fal.ai) and `LocalTrellisProvider` (local TRELLIS worker).
 
 **What is new:**
 - `LocalTrellisProvider` — a provider that never touches torch/TRELLIS on
@@ -289,14 +289,14 @@ ARVR/
 │   │   ├── api/admin.py          #   Admin endpoints
 │   │   ├── models/               #   Dish, Generation + lifecycle enum
 │   │   ├── services/             #   GenerationService, DishService
-│   │   ├── providers/            #   base (ABC), meshy, local_trellis, trellis_jobs
+│   │   ├── providers/            #   base (ABC), fal_trellis, local_trellis, trellis_jobs
 │   │   ├── storage/              #   base (ABC), local
 │   │   ├── validation/           #   GLB/USDZ automated checks
 │   │   └── workers/              #   background worker factory
 │   ├── trellis_worker/           #   Colab-only: run_worker.py, smoke_test.py
 │   ├── docs/                     #   GPU architecture + Drive transport guides
 │   └── tests/                    #   65 tests, no GPU required
-├── scripts/                      #   Asset-pipeline experiments (m17-meshy, etc.)
+├── scripts/                      #   Asset-pipeline utilities (glb-to-usdz, etc.)
 └── PROJECT_OVERVIEW.md           #   ← this document
 ```
 

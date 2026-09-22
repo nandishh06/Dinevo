@@ -1,7 +1,7 @@
 """RLS tenant-isolation integration tests (require a live Supabase project).
 
 These tests are skipped unless SUPABASE_URL, SUPABASE_ANON_KEY, and
-SUPABASE_SERVICE_ROLE_KEY are present. They verify that even a DIRECT Supabase
+SUPABASE_SECRET_KEY are present. They verify that even a DIRECT Supabase
 query with the anon key + a user's JWT cannot cross tenant boundaries — i.e.
 the database RLS policies, not application code, enforce isolation.
 
@@ -24,15 +24,15 @@ pytestmark = pytest.mark.skipif(
     not (
         os.environ.get("SUPABASE_URL")
         and os.environ.get("SUPABASE_ANON_KEY")
-        and os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+        and os.environ.get("SUPABASE_SECRET_KEY")
     ),
-    reason="requires live Supabase env (URL + anon + service-role key)",
+    reason="requires live Supabase env (URL + anon + secret key)",
 )
 
 
 def _make_client(anon: bool) -> Client:
     url = os.environ["SUPABASE_URL"]
-    key = os.environ["SUPABASE_ANON_KEY"] if anon else os.environ["SUPABASE_SERVICE_ROLE_KEY"]
+    key = os.environ["SUPABASE_ANON_KEY"] if anon else os.environ["SUPABASE_SECRET_KEY"]
     return create_client(url, key)
 
 

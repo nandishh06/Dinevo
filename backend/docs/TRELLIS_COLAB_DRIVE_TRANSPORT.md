@@ -94,13 +94,13 @@ rsync -av backend/data/trellis_jobs/bridge/in/ backend/data/trellis_jobs/results
 
 Drive sync latency is seconds-to-minutes. For the ONE-dish proof this is
 fine: the worker polls every 10s and the generation takes minutes. The
-provider's `poll()` returns the current `status.json`; `GenerationService`
-has a bounded `MESHY_MAX_WAIT_SECONDS` (600s default) so it will not hang
-forever if sync stalls. Do NOT use this for high-throughput production.
+provider's `poll()` returns the current `status.json`; the generation flow is
+bounded so it will not hang forever if sync stalls. Do NOT use this for
+high-throughput production.
 
 ## Security
 
-- No Google credentials, tokens, or MESHY keys in the repo.
+- No Google credentials, tokens, or provider API keys in the repo.
 - Drive auth stays in the user's browser session / rclone config (outside the
   repo).
 - The shared folder is private to the user's own Google account.

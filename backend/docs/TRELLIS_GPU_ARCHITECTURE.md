@@ -32,7 +32,7 @@ existing customer 3D/WebAR frontend (unchanged)
 - `backend/.venv` (Python 3.11): FastAPI + SQLAlchemy + pytest only.
 - **No** torch / CUDA / TRELLIS / kaolin / xformers — intentionally.
 - Runs: frontend, FastAPI, database, asset API, admin API, tests.
-- Provider selection via `IMAGE_TO_3D_PROVIDER` (`meshy` default | `trellis`).
+- Provider selection via `IMAGE_TO_3D_PROVIDER` (`fal` default | `trellis`).
 
 ## B. Colab GPU environment (temporary laboratory)
 

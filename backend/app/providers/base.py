@@ -1,7 +1,7 @@
-"""ImageTo3DProvider — the narrow seam between GenerationService and any
-image->3D backend (Meshy today, a self-hosted model later).
+"""ImageTo3DProvider — the narrow seam between the generation lifecycle and any
+image->3D backend (fal.ai TRELLIS, local TRELLIS worker).
 
-GenerationService depends on this protocol, never on MeshyProvider directly.
+The service layer depends on this protocol, never on a concrete provider.
 """
 
 from __future__ import annotations

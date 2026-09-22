@@ -18,7 +18,6 @@ def build_provider(settings: Settings) -> ImageTo3DProvider:
     """Select the image->3D provider from IMAGE_TO_3D_PROVIDER.
 
       "fal"     -> FalTrellisProvider (fal.ai TRELLIS; requires FAL_KEY)
-      "meshy"   -> MeshyProvider (paid/cloud; requires MESHY_API_KEY)
       "trellis" -> LocalTrellisProvider (free/local GPU job protocol)
     """
     provider_name = settings.image_to_3d_provider
@@ -31,14 +30,10 @@ def build_provider(settings: Settings) -> ImageTo3DProvider:
         from app.providers.fal_trellis import FalTrellisProvider
 
         return FalTrellisProvider(api_key=settings.fal_key)
-    from app.providers.meshy import MeshyProvider
-
-    if not settings.meshy_api_key:
-        raise RuntimeError(
-            "MESHY_API_KEY is not set; cannot run real Meshy generation "
-            "(automated tests use FakeImageTo3DProvider instead)"
-        )
-    return MeshyProvider(api_key=settings.meshy_api_key)
+    raise RuntimeError(
+        f"Unsupported IMAGE_TO_3D_PROVIDER: {provider_name!r} "
+        "(supported: 'fal', 'trellis')"
+    )
 
 
 def run_saas_generation_in_background(generation_id: str) -> None:

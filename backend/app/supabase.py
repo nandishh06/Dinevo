@@ -40,11 +40,11 @@ def get_supabase(settings: Settings | None = None) -> Client:
     service-role key are used; the anon key is intentionally never read here.
     """
     s = settings or load_settings()
-    if not s.supabase_url or not s.supabase_service_role_key:
+    if not s.supabase_url or not s.supabase_secret_key:
         raise SupabaseNotConfigured(
-            "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set"
+            "SUPABASE_URL and SUPABASE_SECRET_KEY must be set"
         )
-    return create_client(s.supabase_url, s.supabase_service_role_key)
+    return create_client(s.supabase_url, s.supabase_secret_key)
 
 
 @lru_cache(maxsize=1)
@@ -142,6 +142,6 @@ def get_supabase_settings() -> Settings:
 def env_has_supabase() -> bool:
     """True when the minimum Supabase config is present (used by tests)."""
     url = os.environ.get("SUPABASE_URL", "").strip()
-    key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "").strip()
+    key = os.environ.get("SUPABASE_SECRET_KEY", "").strip()
     secret = os.environ.get("SUPABASE_JWT_SECRET", "").strip()
     return bool(url and key and secret)

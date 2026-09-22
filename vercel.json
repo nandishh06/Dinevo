@@ -2,24 +2,38 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "services": {
     "frontend": {
-  "root": ".",
-  "framework": "tanstack-start"
-},
+      "root": ".",
+      "framework": "tanstack-start"
+    },
     "backend": {
       "root": "backend/",
       "entrypoint": "app.main:app",
       "routes": [
         {
-          "src": "/api/(.*)",
+          "src": "^/api/(.*)$",
           "transforms": [
-            { "type": "request.path", "op": "set", "args": "/$1" }
+            {
+              "type": "request.path",
+              "op": "set",
+              "args": "/$1"
+            }
           ]
         }
       ]
     }
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": { "service": "backend" } },
-    { "source": "/(.*)", "destination": { "service": "frontend" } }
+    {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "frontend"
+      }
+    }
   ]
 }

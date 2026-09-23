@@ -12,7 +12,8 @@ export default defineConfig({
     // configureServer) runs before Vite's built-in `server.proxy` and swallows
     // extensionless /api/* requests. Registering this proxy as the FIRST plugin
     // puts its middleware ahead of Nitro's, so /api/* reaches the FastAPI
-    // backend with the /api prefix stripped. Not active for builds.
+    // backend with the /api prefix preserved (FastAPI serves /api/* both locally
+    // and in production). Not active for builds.
     {
       name: "dev-api-proxy",
       apply: "serve",
@@ -31,7 +32,7 @@ export default defineConfig({
               host: "127.0.0.1",
               port: 8000,
               method: req.method,
-              path: req.url.replace(/^\/api/, ""),
+              path: req.url,
               headers,
             },
             (upstreamRes) => {

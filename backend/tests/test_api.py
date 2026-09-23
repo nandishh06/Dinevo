@@ -1,4 +1,4 @@
-"""API-level tests: /health."""
+"""API-level tests: /api/health."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from app.main import app
 
 def test_health() -> None:
     with TestClient(app) as client:
-        resp = client.get("/health")
+        resp = client.get("/api/health")
     assert resp.status_code == 200
     body = resp.json()
     assert body["status"] == "ok"

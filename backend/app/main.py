@@ -4,9 +4,9 @@ Run locally with:
     uvicorn app.main:app --reload
 
 Serves:
-  /health                 liveness probe
-  /dashboard/...          authenticated owner dashboard (Supabase-backed)
-  /menu/{slug}            public customer menu (Supabase-backed)
+  /api/health             liveness probe
+  /api/dashboard/...      authenticated owner dashboard (Supabase-backed)
+  /api/menu/{slug}        public customer menu (Supabase-backed)
 """
 
 from __future__ import annotations
@@ -33,14 +33,14 @@ app.add_middleware(
     allow_headers=["Authorization", "Content-Type"],
 )
 
-app.include_router(dashboard_router)
-app.include_router(menu_router)
+app.include_router(dashboard_router, prefix="/api")
+app.include_router(menu_router, prefix="/api")
 
 
 def get_settings() -> Settings:
     return load_settings()
 
 
-@app.get("/health", response_model=HealthResponse)
+@app.get("/api/health", response_model=HealthResponse)
 def health(_settings: Settings = Depends(get_settings)) -> HealthResponse:
     return HealthResponse(status="ok", service="dscape-dine-ar-backend")

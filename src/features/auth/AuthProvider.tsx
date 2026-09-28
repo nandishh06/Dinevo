@@ -58,6 +58,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       async signIn(email, password) {
         const res = await signIn(email, password);
+        if (!res.error) {
+          setSession(res.session ?? null);
+          setUser(res.user ?? null);
+        }
         return res.error;
       },
       async signUp(email, password) {
